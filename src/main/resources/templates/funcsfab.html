@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Funcionários do Setor</title>
+</head>
+<body>
+
+	<div th:insert="~{viewFragments :: menu}"></div>
+
+	<p class="h4" th:if="${setor == null}">O setor não está cadastrado</p>
+	
+	<p class="h4" th:if="${funcsfab.size() == 0}">O setor 
+	<i th:text="${setor.nome}"></i> não possui funcionários cadastrados</p>
+	
+	<p class="h4" th:if="${funcsfab.size() > 0}">O setor <i th:text="${setor.nome}"></i>
+		possui <span th:text="${funcsfab.size()}"></span> Funcionário(s)</p>
+	
+	<button class="btn btn-primary" data-bs-toggle="modal"
+		data-bs-target="#modalCadastro">Inserir novo Funcionário</button>
+		
+		<div style="display: flex; flex-flow: row wrap">
+			
+			<div th:each="funcfab: ${funcsfab}">
+			
+				<div class="card">
+					<div class="card-header">
+						Funcionário: <span th:text="${funcfab.nome}"></span>
+					</div>
+				</div>
+			
+			</div>
+		
+		</div>
+		
+		
+		<div class="modal fade" id="modalCadastro" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar
+					um novo FuncFab</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form th:action="@{/funcfab/cadastro}" method="post"
+					th:object="${funcfab}">
+					<table class="table">
+						<tr>
+							<th>Nome:</th>
+							<td>
+								<input type="text" th:field="*{nome}" class="form-control" />
+							</td>
+						</tr>
+					</table>
+					<input type="hidden" name="setor.codigo" th:value="${session.setor.getCodigo()}" />
+					<button type="submit" class="btn btn-primary">Cadastrar</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+		
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Factory Track</title>
+
+</head>
+
+<body>
+
+	<div th:insert="~{viewFragments :: menu}"></div>
+		
+	<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCadastro">Cadastrar</button>
+	<div style="display: flex; flex-flow: row wrap; width: 100%">
+
+		<div th:each="setor : ${setores}" th:object="${setor}" style=" ; padding: 1% 5%">
+
+			<div class="card">
+				<div class="card-header">
+					<p>
+						Nome do Setor: <i th:text="*{nome}"></i>
+					</p>
+				</div>
+				<div class="card-body">
+
+					<table class="table">
+						<tr colSpan="2">
+							<th>Descrição</th>
+						</tr>
+						<tr>
+							<td colSpan="2">
+								<p th:text="*{descricao}"></p>
+							</td>
+						</tr>
+						<tr>
+							<th>Total de Problemas</th>
+							<th>Total de Funcionários</th>
+						</tr>
+						<tr>
+							<td>
+								<p th:text="*{problemas.size()}"></p>
+							</td>
+							<td>
+								<p th:text="*{funcionarios.size()}"></p>
+							</td>
+						</tr>
+
+					</table>
+
+				</div>
+				<div class="card-footer">
+					<a href="#" th:href="@{/setor/{codigo}(codigo=*{codigo})}"
+						class="btn btn-danger">Funcionários</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="modalCadastro" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar
+						um novo Setor</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form action="/setor/cadastro" method="post">
+						<table class=table>
+							<tr>
+								<th>Nome:</th>
+								<td><input type=text name="nome" class="form-control" /></td>
+							</tr>
+							<tr>
+								<th>Descrição:</th>
+								<td><input type=text name="descricao" class="form-control" /></td>
+							</tr>
+						</table>
+						<button type="submit" class="btn btn-primary">Cadastrar</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

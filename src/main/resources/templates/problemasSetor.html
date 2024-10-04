@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Problemas do Setor</title>
+</head>
+<body>
+
+	<div th:insert="~{viewFragments :: menu}"></div>
+
+	<p class="h4" th:if="${problemas == null}">O setor não está
+		cadastrado</p>
+
+	<p class="h4" th:if="${problemas.size() == 0}">
+		O Setor <i th:text="${setor.nome}"></i> não possui problemas
+		cadastrados
+	</p>
+
+	<p class="h4" th:if="${problemas.size() > 0}">Você não cadastrou
+		problema(s)</p>
+
+	<button class="btn btn-primary" data-bs-toggle="modal"
+		data-bs-target="#modalCadastro">Inserir novo Problema</button>
+
+	<div style="display: flex; flex-flow: row wrap">
+
+		<div th:each="problema: ${problemas}">
+
+			<div class="card">
+				<div class="card-header">
+					Data do Problema: <span th:text="${problema.dataFormatada}"></span>
+				</div>
+				<div class="card-body">
+					<table class="table">
+						<tr>
+							<th>Tipo do Problema:</th>
+						</tr>
+						<tr>
+							<td><span th:text="${problema.tipo}"></span></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal fade" id="modalCadastro" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar
+						um novo problema</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form th:action="@{/problemas/save}" method="post"
+						th:object="${problema}">
+						<div class="form-group">
+							<label for="opcoes">Selecione uma opção:</label></br>
+							<!-- <input type="hidden" name="codigoFuncFab" th:value="" /> -->
+							<button type="submit" name="tipo" value="Acidente"
+								class="btn btn-danger">Acidente</button>
+							<button type="submit" name="tipo" value="Assédio"
+								class="btn btn-danger">Assédio</button>
+							<button type="submit" name="tipo" value="Falha de Pessoal"
+								class="btn btn-danger">Falha de Pessoal</button>
+							<button type="submit" name="tipo" value="Falha em equipamento"
+								class="btn btn-danger">Falha Em Equipamento</button>
+							<button type="submit" name="tipo" value="Falta de Insumo"
+								class="btn btn-danger">Falta de Insumo</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

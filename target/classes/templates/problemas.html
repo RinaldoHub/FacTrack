@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Problemas do Setor</title>
+</head>
+<body>
+
+	<div th:if="${session.pLogado == null}">
+		<div th:insert="~{viewFragments :: menu}"></div>
+	</div>
+	<div th:if="${session.pLogado != null}">
+		<div th:insert="~{viewFragments :: menuProfessor}"></div>	
+	</div>
+
+	<p class="h4" th:if="${problemas == null}">O setor não está cadastrado</p>
+	
+	<p class="h4" th:if="${problemas.size() == 0}">O setor 
+	<i th:text="${setor.nome}"></i> não possui problemas cadastrados</p>
+	
+	<p class="h4" th:if="${problemas.size() > 0}">O setor <i th:text="${setor.nome}"></i>
+		possui <span th:text="${problemas.size()}"></span> problema(s)</p>
+	
+	<button class="btn btn-primary" data-bs-toggle="modal"
+		data-bs-target="#modalCadastro">Inserir novo Problema</button>
+		
+		<div style="display: flex; flex-flow: row wrap">
+			
+			<div th:each="problema: ${problemas}">
+			
+				<div class="card">
+					<div class="card-header">
+						Data do Problema: <span th:text="${problema.dataFormatada}"></span>
+					</div>
+					<div class="card-body">
+						<table class="table">
+							<tr><th>Problema:</th></tr>
+							<tr><td><span th:text="${problema.descricao}"></span></td></tr>
+						</table>
+					</div>
+				</div>
+			
+			</div>
+		
+		</div>
+		
+		
+		<div class="modal fade" id="modalCadastro" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar
+						um novo problema</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form th:action="@{/problemas/save}" method="post"
+						th:object="${problema}">
+						<input type="hidden" name="codigoSetor" th:value="${setor.codigo}"/>
+						<table class=table>
+							<tr>
+								<th>Data:</th>
+								<td><input type=text name="dataFormatada" th:placeholder="*{dataFormatada}" class="form-control" /></td>
+							</tr>
+							<tr>
+								<th>Descrição:</th>
+								<td><textarea type=text th:field="*{descricao}" class="form-control" ></textarea></td>
+							</tr>
+						</table>
+						<button type="submit" class="btn btn-primary">cadastrar</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>
